@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  instant-payment-service:
+    build:
+      context: ./payment-service
+      dockerfile: Dockerfile
+    ports:
+      - "8765:8765"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
