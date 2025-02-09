@@ -3,12 +3,13 @@ version: "3.8"
 services:
   payment-service:
     build:
-      context: ./payment-service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: payment-service/Dockerfile
     depends_on:
       - postgres
     ports:
       - "8765:8765"
+      - "5005:5005"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/transactions_db

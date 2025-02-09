@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PaymentRequestMapper {
 
-  public Transaction toDomain(PaymentRequest request) {
+  public Transaction toEntity(PaymentRequest request) {
     return new Transaction(
         request.id(),
         request.senderId(),

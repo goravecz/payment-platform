@@ -1,16 +1,48 @@
 package com.bank.paymentservice.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+@Entity
+@Table(name = "transactions")
 public class Transaction {
+
+  @Id
   private UUID id;
+
+  @Column(nullable = false)
   private String senderId;
+
+  @Column(nullable = false)
   private String receiverId;
+
+  @Column(nullable = false)
   private BigDecimal amount;
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
   private TransactionStatus status;
+
+  @Enumerated(EnumType.STRING)
   private FailureReason failureReason;
+
+  @CreationTimestamp
+  @Column(nullable = false, updatable = false)
+  private java.time.LocalDateTime createdAt;
+
+  @UpdateTimestamp
+  @Column(nullable = false)
+  private java.time.LocalDateTime updatedAt;
 
   public Transaction() {
   }
@@ -73,6 +105,22 @@ public class Transaction {
     this.failureReason = failureReason;
   }
 
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  public LocalDateTime getUpdatedAt() {
+    return updatedAt;
+  }
+
+  public void setUpdatedAt(LocalDateTime updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (o == null || getClass() != o.getClass())
@@ -87,8 +135,7 @@ public class Transaction {
   }
 
   @Override
-  public int hashCode()
-  {
+  public int hashCode() {
     int result = Objects.hashCode(id);
     result = 31 * result + Objects.hashCode(senderId);
     result = 31 * result + Objects.hashCode(receiverId);
@@ -108,6 +155,8 @@ public class Transaction {
         ", amount=" + amount +
         ", status=" + status +
         ", failureReason=" + failureReason +
+        ", createdAt=" + createdAt +
+        ", updatedAt=" + updatedAt +
         '}';
   }
 }

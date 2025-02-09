@@ -4,6 +4,7 @@ import com.bank.paymentservice.dto.PaymentRequest;
 import com.bank.paymentservice.dto.PaymentResponse;
 import com.bank.paymentservice.mapper.PaymentRequestMapper;
 import com.bank.paymentservice.service.PaymentService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +29,11 @@ public class PaymentController
   }
 
   @PostMapping("/payment")
-  public ResponseEntity<PaymentResponse> handlePaymentRequest(@Valid @RequestBody PaymentRequest request) {
+  public ResponseEntity<PaymentResponse> handlePaymentRequest(@Valid @RequestBody PaymentRequest request,
+      HttpServletRequest httpRequest) {
     LOG.info("PaymentRequest: {}", request);
-    PaymentResponse paymentResponse = paymentService.processPayment(paymentRequestMapper.toDomain(request));
+    httpRequest.setAttribute("id", request.id());
+    PaymentResponse paymentResponse = paymentService.processPayment(paymentRequestMapper.toEntity(request));
     return ResponseEntity.accepted().body(paymentResponse);
   }
 }
