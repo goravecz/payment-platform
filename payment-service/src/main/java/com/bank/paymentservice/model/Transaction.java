@@ -1,6 +1,7 @@
 package com.bank.paymentservice.model;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Transaction {
@@ -70,5 +71,43 @@ public class Transaction {
 
   public void setFailureReason(FailureReason failureReason) {
     this.failureReason = failureReason;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass())
+    {
+      return false;
+    }
+
+    Transaction that = (Transaction) o;
+    return Objects.equals(id, that.id) && Objects.equals(senderId, that.senderId)
+        && Objects.equals(receiverId, that.receiverId) && Objects.equals(amount,
+        that.amount) && status == that.status && failureReason == that.failureReason;
+  }
+
+  @Override
+  public int hashCode()
+  {
+    int result = Objects.hashCode(id);
+    result = 31 * result + Objects.hashCode(senderId);
+    result = 31 * result + Objects.hashCode(receiverId);
+    result = 31 * result + Objects.hashCode(amount);
+    result = 31 * result + Objects.hashCode(status);
+    result = 31 * result + Objects.hashCode(failureReason);
+    return result;
+  }
+
+  @Override
+  public String toString()
+  {
+    return "Transaction{" +
+        "id=" + id +
+        ", senderId='" + senderId + '\'' +
+        ", receiverId='" + receiverId + '\'' +
+        ", amount=" + amount +
+        ", status=" + status +
+        ", failureReason=" + failureReason +
+        '}';
   }
 }
