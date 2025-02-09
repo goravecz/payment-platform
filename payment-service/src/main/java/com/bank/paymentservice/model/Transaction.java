@@ -14,6 +14,16 @@ public class Transaction {
   public Transaction() {
   }
 
+  public Transaction(UUID id, String senderId, String receiverId, BigDecimal amount,
+      TransactionStatus status, FailureReason failureReason) {
+    this.id = id;
+    this.senderId = senderId;
+    this.receiverId = receiverId;
+    this.amount = amount;
+    this.status = status;
+    this.failureReason = failureReason;
+  }
+
   public UUID getId() {
     return id;
   }
