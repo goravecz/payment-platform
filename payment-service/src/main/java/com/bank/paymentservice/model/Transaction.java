@@ -18,6 +18,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class Transaction {
 
   @Id
+  @Column(unique = true)
   private UUID id;
 
   @Column(nullable = false)
