@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public record PaymentRequest(
 
-  @NotBlank(message = "Unique key is required")
+  @NotNull(message = "Unique key is required")
   UUID id,
 
   @NotBlank(message = "Sender id is required")

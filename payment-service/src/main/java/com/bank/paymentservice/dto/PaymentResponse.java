@@ -1,8 +1,12 @@
 package com.bank.paymentservice.dto;
 
+import com.bank.paymentservice.model.FailureReason;
+import com.bank.paymentservice.model.TransactionStatus;
+import java.util.UUID;
+
 public record PaymentResponse(
-  String transactionId,
-  String status,
-  String failureReason,
+  UUID transactionId,
+  TransactionStatus status,
+  FailureReason failureReason,
   String message
 ) {}
