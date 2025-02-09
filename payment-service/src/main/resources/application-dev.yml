@@ -1,5 +1,21 @@
 spring:
   application:
-  name: payment-service
+    name: payment-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/transactions_db
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
 server:
   port: 8765
