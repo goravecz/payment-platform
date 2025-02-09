@@ -10,8 +10,7 @@ public class PaymentResponseMapper {
     return new PaymentResponse(
         transaction.getId(),
         transaction.getStatus(),
-        transaction.getFailureReason(),
-        ""
+        transaction.getFailureReason()
     );
   }
 }
