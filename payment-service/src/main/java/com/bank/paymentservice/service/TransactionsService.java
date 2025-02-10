@@ -18,11 +18,6 @@ public class TransactionsService {
 
   @Transactional(isolation = Isolation.SERIALIZABLE)
   public Transaction save(Transaction transaction) {
-    // The unique constraint on the (primary key) id should throw an DataIntegrityViolationException
-    // if the transaction already exists, but it doesn't. So I have to check it manually.
-    if (transactionsRepository.existsById(transaction.getId())) {
-      throw new DuplicateTransactionException(transaction.getId());
-    }
     return transactionsRepository.save(transaction);
   }
 }

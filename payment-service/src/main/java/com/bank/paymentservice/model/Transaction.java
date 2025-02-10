@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
@@ -18,7 +20,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class Transaction {
 
   @Id
-  private UUID id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Column(nullable = false, unique = true)
+  private UUID uuid;
 
   @Column(nullable = false)
   private UUID senderId;
@@ -44,29 +50,21 @@ public class Transaction {
   public Transaction() {
   }
 
-  public Transaction(UUID id, UUID senderId, UUID receiverId, BigDecimal amount,
+  public Transaction(UUID uuid, UUID senderId, UUID receiverId, BigDecimal amount,
       TransactionStatus status) {
-    this.id = id;
+    this.uuid = uuid;
     this.senderId = senderId;
     this.receiverId = receiverId;
     this.amount = amount;
     this.status = status;
   }
 
-  public Transaction(Transaction old, TransactionStatus newStatus) {
-    this.id = old.id;
-    this.senderId = old.senderId;
-    this.receiverId = old.receiverId;
-    this.amount = old.amount;
-    this.status = newStatus != null ? newStatus : old.status;
+  public UUID getUuid() {
+    return uuid;
   }
 
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
+  public void setUuid(UUID uuid) {
+    this.uuid = uuid;
   }
 
   public UUID getSenderId() {
