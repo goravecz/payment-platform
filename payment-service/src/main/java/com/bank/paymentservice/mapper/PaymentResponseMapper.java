@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class PaymentResponseMapper {
   public PaymentResponse toResponse(Transaction transaction) {
     return new PaymentResponse(
-        transaction.getId(),
+        transaction.getUuid(),
         transaction.getStatus()
     );
   }

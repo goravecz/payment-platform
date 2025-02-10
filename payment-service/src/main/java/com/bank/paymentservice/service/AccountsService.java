@@ -29,16 +29,15 @@ public class AccountsService {
   public Transaction makePayment(Transaction transaction) {
     BigDecimal amount = transaction.getAmount();
 
-    Account senderAccount = accountsRepository.findById(transaction.getSenderId())
-        .orElseThrow(() -> new SenderAccountNotFoundException(transaction.getId(), transaction.getSenderId()));
+    Account senderAccount = accountsRepository.findByUuid(transaction.getSenderId())
+        .orElseThrow(() -> new SenderAccountNotFoundException(transaction.getUuid(), transaction.getSenderId()));
 
-    Account receiverAccount = accountsRepository.findById(transaction.getReceiverId())
-        .orElseThrow(() -> new ReceiverAccountNotFoundException(transaction.getId(), transaction.getReceiverId()));
+    Account receiverAccount = accountsRepository.findByUuid(transaction.getReceiverId())
+        .orElseThrow(() -> new ReceiverAccountNotFoundException(transaction.getUuid(), transaction.getReceiverId()));
 
     if (senderAccount.getBalance().compareTo(amount) < 0) {
-      transaction.setStatus(TransactionStatus.FAILURE);
-      transactionRepository.save(transaction);
-      throw new InsufficientFundsException(transaction.getId(), senderAccount.getId());
+      transaction.setStatus(TransactionStatus.INSUFFICIENT_FUNDS);
+      return transactionRepository.save(transaction);
     }
 
     senderAccount.setBalance(senderAccount.getBalance().subtract(amount));

@@ -2,6 +2,8 @@ package com.bank.paymentservice.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
@@ -13,7 +15,11 @@ import java.util.UUID;
 public class Account {
 
   @Id
-  private UUID id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Column(nullable = false, unique = true)
+  private UUID uuid;
 
   @Column(nullable = false)
   private String name;
@@ -24,12 +30,12 @@ public class Account {
   public Account() {
   }
 
-  public UUID getId() {
-    return id;
+  public UUID getUuid() {
+    return uuid;
   }
 
-  public void setId(UUID id) {
-    this.id = id;
+  public void setUuid(UUID uuid) {
+    this.uuid = uuid;
   }
 
   public String getName() {

@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AccountsRepository extends JpaRepository<Account, UUID> {
+public interface AccountsRepository extends JpaRepository<Account, Long> {
 
   @Lock(LockModeType.PESSIMISTIC_WRITE)
-  Optional<Account> findById(UUID id);
+  Optional<Account> findByUuid(UUID uuid);
 }
