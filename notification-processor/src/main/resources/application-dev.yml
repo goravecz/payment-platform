@@ -1,6 +1,9 @@
 spring:
   application:
     name: notification-processor
-
+  kafka:
+    bootstrap-servers: kafka:29092
+    consumer:
+      enable-auto-commit: false
 server:
-  port: 8765
+  port: 8766
