@@ -18,14 +18,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class Transaction {
 
   @Id
-  @Column(unique = true)
   private UUID id;
 
   @Column(nullable = false)
-  private String senderId;
+  private UUID senderId;
 
   @Column(nullable = false)
-  private String receiverId;
+  private UUID receiverId;
 
   @Column(nullable = false)
   private BigDecimal amount;
@@ -33,9 +32,6 @@ public class Transaction {
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private TransactionStatus status;
-
-  @Enumerated(EnumType.STRING)
-  private FailureReason failureReason;
 
   @CreationTimestamp
   @Column(nullable = false, updatable = false)
@@ -48,14 +44,21 @@ public class Transaction {
   public Transaction() {
   }
 
-  public Transaction(UUID id, String senderId, String receiverId, BigDecimal amount,
-      TransactionStatus status, FailureReason failureReason) {
+  public Transaction(UUID id, UUID senderId, UUID receiverId, BigDecimal amount,
+      TransactionStatus status) {
     this.id = id;
     this.senderId = senderId;
     this.receiverId = receiverId;
     this.amount = amount;
     this.status = status;
-    this.failureReason = failureReason;
+  }
+
+  public Transaction(Transaction old, TransactionStatus newStatus) {
+    this.id = old.id;
+    this.senderId = old.senderId;
+    this.receiverId = old.receiverId;
+    this.amount = old.amount;
+    this.status = newStatus != null ? newStatus : old.status;
   }
 
   public UUID getId() {
@@ -66,19 +69,19 @@ public class Transaction {
     this.id = id;
   }
 
-  public String getSenderId() {
+  public UUID getSenderId() {
     return senderId;
   }
 
-  public void setSenderId(String senderId) {
+  public void setSenderId(UUID senderId) {
     this.senderId = senderId;
   }
 
-  public String getReceiverId() {
+  public UUID getReceiverId() {
     return receiverId;
   }
 
-  public void setReceiverId(String receiverId) {
+  public void setReceiverId(UUID receiverId) {
     this.receiverId = receiverId;
   }
 
@@ -96,14 +99,6 @@ public class Transaction {
 
   public void setStatus(TransactionStatus status) {
     this.status = status;
-  }
-
-  public FailureReason getFailureReason() {
-    return failureReason;
-  }
-
-  public void setFailureReason(FailureReason failureReason) {
-    this.failureReason = failureReason;
   }
 
   public LocalDateTime getCreatedAt() {
@@ -132,7 +127,7 @@ public class Transaction {
     Transaction that = (Transaction) o;
     return Objects.equals(id, that.id) && Objects.equals(senderId, that.senderId)
         && Objects.equals(receiverId, that.receiverId) && Objects.equals(amount,
-        that.amount) && status == that.status && failureReason == that.failureReason;
+        that.amount) && status == that.status;
   }
 
   @Override
@@ -142,7 +137,6 @@ public class Transaction {
     result = 31 * result + Objects.hashCode(receiverId);
     result = 31 * result + Objects.hashCode(amount);
     result = 31 * result + Objects.hashCode(status);
-    result = 31 * result + Objects.hashCode(failureReason);
     return result;
   }
 
@@ -155,7 +149,6 @@ public class Transaction {
         ", receiverId='" + receiverId + '\'' +
         ", amount=" + amount +
         ", status=" + status +
-        ", failureReason=" + failureReason +
         ", createdAt=" + createdAt +
         ", updatedAt=" + updatedAt +
         '}';

@@ -11,11 +11,11 @@ public record PaymentRequest(
   @NotNull(message = "Unique key is required")
   UUID id,
 
-  @NotBlank(message = "Sender id is required")
-  String senderId,
+  @NotNull(message = "Sender id is required")
+  UUID senderId,
 
-  @NotBlank(message = "Receiver id is required")
-  String receiverId,
+  @NotNull(message = "Receiver id is required")
+  UUID receiverId,
 
   @NotNull(message = "Amount is required")
   @DecimalMin(value = "0.01", message = "Amount must be greater than zero")
