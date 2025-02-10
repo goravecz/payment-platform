@@ -19,6 +19,18 @@ services:
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=password
 
+  notification-processor:
+    build:
+      context: .
+      dockerfile: notification-processor/Dockerfile
+    ports:
+      - "8766:8766"
+      - "5006:5006"
+    networks:
+      - kafka-net
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
   postgres:
     image: postgres:15
     container_name: transactions_db
