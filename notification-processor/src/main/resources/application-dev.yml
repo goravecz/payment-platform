@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: notification-processor
+
+server:
+  port: 8765
