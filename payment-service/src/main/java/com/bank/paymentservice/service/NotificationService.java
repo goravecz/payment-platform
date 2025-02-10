@@ -19,14 +19,19 @@ public class NotificationService {
     }
 
     public void sendNotification(Notification notification) {
-        kafkaTemplate.send(NOTIFICATION_TOPIC, notification)
-            .whenComplete((result, ex) -> {
-                if (ex != null) {
-                    LOG.error("Failed to send notification", ex);
-                } else {
-                    LOG.info("Notification sent to topic: {} with payload: {}",
-                        result.getProducerRecord().topic(), result.getProducerRecord().value());
-                }
-            });
+        kafkaTemplate.executeInTransaction(operations -> {
+            operations.send(NOTIFICATION_TOPIC, notification)
+                .whenComplete((result, ex) -> {
+                    if (ex != null) {
+                        LOG.error("Failed to send notification", ex);
+                        throw new RuntimeException("Failed to send notification", ex);
+                    } else {
+                        LOG.info("Notification sent to topic: {} with payload: {}",
+                            result.getProducerRecord().topic(),
+                            result.getProducerRecord().value());
+                    }
+                });
+            return null;
+        });
     }
 }
