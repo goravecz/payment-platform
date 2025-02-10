@@ -48,6 +48,36 @@ public class PaymentErrorHandler {
         .body(errorResponse);
   }
 
+  @ExceptionHandler(InsufficientFundsException.class)
+  public ResponseEntity<ErrorResponse> handleInsufficientFundsException(InsufficientFundsException ex) {
+    ErrorResponse errorResponse = new ErrorResponse(ex.getId(),
+        "Insufficient funds for account id: " + ex.getAccountId(), List.of());
+    LOG.error("{}", errorResponse);
+    return ResponseEntity
+        .badRequest()
+        .body(errorResponse);
+  }
+
+  @ExceptionHandler(SenderAccountNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleSenderAccountNotFoundException(SenderAccountNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getId(),
+            "Sender account not found for account id: " + ex.getAccountId(), List.of());
+        LOG.error("{}", errorResponse);
+        return ResponseEntity
+            .badRequest()
+            .body(errorResponse);
+    }
+
+    @ExceptionHandler(ReceiverAccountNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleReceiverAccountNotFoundException(ReceiverAccountNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getId(),
+            "Receiver account not found for account id: " + ex.getAccountId(), List.of());
+        LOG.error("{}", errorResponse);
+        return ResponseEntity
+            .badRequest()
+            .body(errorResponse);
+    }
+
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleGenericException(Exception ex, WebRequest request) {
     UUID id = (UUID) request.getAttribute("id", RequestAttributes.SCOPE_REQUEST);
