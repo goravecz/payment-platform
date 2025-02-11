@@ -36,7 +36,7 @@ public class PaymentService {
   }
 
   public PaymentResponse processPayment(Transaction transaction) {
-    LOG.info("Transaction: {}", transaction);
+    LOG.info("Starting transaction. Transaction: {}", transaction);
 
     transaction.setStatus(TransactionStatus.PENDING);
 

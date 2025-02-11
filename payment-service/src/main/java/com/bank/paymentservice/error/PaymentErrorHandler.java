@@ -59,6 +59,7 @@ public class PaymentErrorHandler {
     ErrorResponse errorResponse = new ErrorResponse(ex.getId(),
         "Insufficient funds for account id: " + ex.getAccountId(), List.of());
     LOG.error("{}", errorResponse);
+
     return ResponseEntity
         .badRequest()
         .body(errorResponse);
@@ -70,6 +71,7 @@ public class PaymentErrorHandler {
     ErrorResponse errorResponse = new ErrorResponse(ex.getId(),
         "Sender account not found for account id: " + ex.getAccountId(), List.of());
     LOG.error("{}", errorResponse);
+
     return ResponseEntity
         .badRequest()
         .body(errorResponse);
@@ -81,6 +83,7 @@ public class PaymentErrorHandler {
     ErrorResponse errorResponse = new ErrorResponse(ex.getId(),
         "Receiver account not found for account id: " + ex.getAccountId(), List.of());
     LOG.error("{}", errorResponse);
+
     return ResponseEntity
         .badRequest()
         .body(errorResponse);
@@ -89,7 +92,6 @@ public class PaymentErrorHandler {
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleGenericException(Exception ex, WebRequest request) {
     UUID id = (UUID) request.getAttribute("id", RequestAttributes.SCOPE_REQUEST);
-
     ErrorResponse errorResponse = new ErrorResponse(id, ex.getMessage(), List.of());
     LOG.error("{}", errorResponse);
 
