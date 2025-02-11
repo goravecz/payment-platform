@@ -19,6 +19,7 @@ public class NotificationService {
   }
 
   public void sendNotification(Notification notification) {
+    LOG.info("Sending notification: {}", notification);
     kafkaTemplate.executeInTransaction(operations -> {
       operations.send(NOTIFICATION_TOPIC, notification)
           .whenComplete((result, ex) -> {
