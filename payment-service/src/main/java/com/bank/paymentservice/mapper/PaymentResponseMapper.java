@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PaymentResponseMapper {
+
   public PaymentResponse toResponse(Transaction transaction) {
     return new PaymentResponse(
         transaction.getUuid(),

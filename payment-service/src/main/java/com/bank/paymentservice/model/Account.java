@@ -55,10 +55,8 @@ public class Account {
   }
 
   @Override
-  public boolean equals(Object o)
-  {
-    if (o == null || getClass() != o.getClass())
-    {
+  public boolean equals(Object o) {
+    if (o == null || getClass() != o.getClass()) {
       return false;
     }
 
@@ -68,8 +66,7 @@ public class Account {
   }
 
   @Override
-  public int hashCode()
-  {
+  public int hashCode() {
     int result = Objects.hashCode(id);
     result = 31 * result + Objects.hashCode(name);
     result = 31 * result + Objects.hashCode(balance);

@@ -1,6 +1,5 @@
 package com.bank.paymentservice.service;
 
-import com.bank.paymentservice.error.InsufficientFundsException;
 import com.bank.paymentservice.error.ReceiverAccountNotFoundException;
 import com.bank.paymentservice.error.SenderAccountNotFoundException;
 import com.bank.paymentservice.model.Account;
@@ -19,21 +18,23 @@ public class AccountsService {
   private final AccountsRepository accountsRepository;
   private final TransactionsRepository transactionRepository;
 
-    public AccountsService(AccountsRepository accountsRepository,
-        TransactionsRepository transactionRepository) {
-        this.accountsRepository = accountsRepository;
-        this.transactionRepository = transactionRepository;
-    }
+  public AccountsService(AccountsRepository accountsRepository,
+      TransactionsRepository transactionRepository) {
+    this.accountsRepository = accountsRepository;
+    this.transactionRepository = transactionRepository;
+  }
 
   @Transactional(isolation = Isolation.SERIALIZABLE)
   public Transaction makePayment(Transaction transaction) {
     BigDecimal amount = transaction.getAmount();
 
     Account senderAccount = accountsRepository.findByUuid(transaction.getSenderId())
-        .orElseThrow(() -> new SenderAccountNotFoundException(transaction.getUuid(), transaction.getSenderId()));
+        .orElseThrow(() -> new SenderAccountNotFoundException(transaction.getUuid(),
+            transaction.getSenderId()));
 
     Account receiverAccount = accountsRepository.findByUuid(transaction.getReceiverId())
-        .orElseThrow(() -> new ReceiverAccountNotFoundException(transaction.getUuid(), transaction.getReceiverId()));
+        .orElseThrow(() -> new ReceiverAccountNotFoundException(transaction.getUuid(),
+            transaction.getReceiverId()));
 
     if (senderAccount.getBalance().compareTo(amount) < 0) {
       transaction.setStatus(TransactionStatus.INSUFFICIENT_FUNDS);
