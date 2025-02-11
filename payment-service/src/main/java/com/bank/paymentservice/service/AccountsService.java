@@ -20,12 +20,12 @@ public class AccountsService {
   private static Logger LOG = LoggerFactory.getLogger(AccountsService.class);
 
   private final AccountsRepository accountsRepository;
-  private final TransactionsRepository transactionRepository;
+  private final TransactionsService transactionsService;
 
   public AccountsService(AccountsRepository accountsRepository,
-      TransactionsRepository transactionRepository) {
+      TransactionsService transactionsService) {
     this.accountsRepository = accountsRepository;
-    this.transactionRepository = transactionRepository;
+    this.transactionsService = transactionsService;
   }
 
   @Transactional(isolation = Isolation.SERIALIZABLE)
@@ -44,7 +44,7 @@ public class AccountsService {
     if (senderAccount.getBalance().compareTo(amount) < 0) {
       transaction.setStatus(TransactionStatus.INSUFFICIENT_FUNDS);
       LOG.info("Updating transaction status in DB. Transaction: {}", transaction);
-      return transactionRepository.save(transaction);
+      return transactionsService.updateWithLocking(transaction);
     }
 
     senderAccount.setBalance(senderAccount.getBalance().subtract(amount));
@@ -59,6 +59,6 @@ public class AccountsService {
     transaction.setStatus(TransactionStatus.SUCCESS);
 
     LOG.info("Updating transaction status in DB. Transaction: {}", transaction);
-    return transactionRepository.save(transaction);
+    return transactionsService.updateWithLocking(transaction);
   }
 }

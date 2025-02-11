@@ -20,8 +20,25 @@ public class TransactionsService {
   }
 
   @Transactional(isolation = Isolation.SERIALIZABLE)
-  public Transaction save(Transaction transaction) {
+  public Transaction saveWithLocking(Transaction transaction) {
+    // just to acquire lock
+    transactionsRepository.findByUuid(transaction.getUuid());
+
+    // relying on the database to enforce uniqueness
     LOG.info("Saving transaction. Transaction: {}", transaction);
+    return transactionsRepository.save(transaction);
+  }
+
+  @Transactional(isolation = Isolation.SERIALIZABLE)
+  public Transaction updateWithLocking(Transaction transaction) {
+    Transaction savedTransaction = transactionsRepository.findByUuid(transaction.getUuid());
+
+    if (savedTransaction == null) {
+      LOG.error("Transaction not found. Transaction: {}", transaction);
+      throw new RuntimeException("Transaction not found");
+    }
+
+    LOG.info("Updating transaction. Transaction: {}", transaction);
     return transactionsRepository.save(transaction);
   }
 }
