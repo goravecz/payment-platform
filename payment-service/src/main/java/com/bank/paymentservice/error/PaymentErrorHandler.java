@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -38,10 +39,15 @@ public class PaymentErrorHandler {
         : null;
 
     List<ValidationError> validationErrors = new ArrayList<>();
-    for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
+
+    for (ObjectError globalError : ex.getBindingResult().getAllErrors()) {
       validationErrors.add(
-          new ValidationError(fieldError.getField(), fieldError.getRejectedValue(),
-              fieldError.getDefaultMessage()));
+          new ValidationError(
+              globalError instanceof FieldError ? ((FieldError) globalError).getField()
+                  : globalError.getObjectName(),
+              globalError instanceof FieldError ? ((FieldError) globalError).getRejectedValue()
+                  : null,
+              globalError.getDefaultMessage()));
     }
 
     ErrorResponse errorResponse =

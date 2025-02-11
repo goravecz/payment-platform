@@ -1,11 +1,13 @@
 package com.bank.paymentservice.dto;
 
+import com.bank.paymentservice.validation.SenderReceiverConstraint;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+@SenderReceiverConstraint
 public record PaymentRequest(
 
     @Schema(description = "The transaction's unique id", example = "123c1262-e29b-1213-a851-226614174012")
