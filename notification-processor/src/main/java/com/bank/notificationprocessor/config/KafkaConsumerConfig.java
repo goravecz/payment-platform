@@ -28,6 +28,7 @@ public class KafkaConsumerConfig {
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
     props.put(ConsumerConfig.GROUP_ID_CONFIG, "payment-processing-group");
+    props.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed");
     JsonDeserializer<Notification> jsonDeserializer = new JsonDeserializer<>(Notification.class);
     jsonDeserializer.addTrustedPackages("com.bank.*");
     jsonDeserializer.setUseTypeHeaders(false);

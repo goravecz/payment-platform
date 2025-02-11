@@ -25,3 +25,7 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 server:
   port: 8765
+logging:
+  level:
+    org.apache.kafka.clients.producer.internals.TransactionManager: DEBUG
+    org.apache.kafka.clients.producer.KafkaProducer: DEBUG
