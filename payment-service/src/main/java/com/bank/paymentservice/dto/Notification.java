@@ -8,4 +8,6 @@ public record Notification(
     UUID senderId,
     UUID receiverId,
     BigDecimal amount
-) {}
+) {
+
+}

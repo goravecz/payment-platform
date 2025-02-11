@@ -21,12 +21,11 @@ public class ValidationError {
   }
 
   public Object getRejectedValue() {
-      return rejectedValue;
+    return rejectedValue;
   }
 
   @Override
-  public String toString()
-  {
+  public String toString() {
     return "ValidationError{" +
         "field='" + field + '\'' +
         ", rejectedValue=" + rejectedValue +

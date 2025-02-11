@@ -20,16 +20,19 @@ public class PaymentErrorHandler {
   private final Logger LOG = LoggerFactory.getLogger(PaymentErrorHandler.class);
 
   @ExceptionHandler(DuplicateTransactionException.class)
-  public ResponseEntity<ErrorResponse> handleDuplicateTransactionException(DuplicateTransactionException ex) {
-    ErrorResponse errorResponse = new ErrorResponse(ex.getId(), "Duplicate transactions are not allowed!", List.of());
+  public ResponseEntity<ErrorResponse> handleDuplicateTransactionException(
+      DuplicateTransactionException ex) {
+    ErrorResponse errorResponse =
+        new ErrorResponse(ex.getId(), "Duplicate transactions are not allowed!", List.of());
     LOG.error("{}", errorResponse);
-      return ResponseEntity
-          .badRequest()
-          .body(errorResponse);
+    return ResponseEntity
+        .badRequest()
+        .body(errorResponse);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+  public ResponseEntity<ErrorResponse> handleValidationExceptions(
+      MethodArgumentNotValidException ex) {
     UUID id = ex.getBindingResult().getTarget() instanceof PaymentRequest request
         ? request.id()
         : null;
@@ -37,10 +40,12 @@ public class PaymentErrorHandler {
     List<ValidationError> validationErrors = new ArrayList<>();
     for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
       validationErrors.add(
-          new ValidationError(fieldError.getField(), fieldError.getRejectedValue(), fieldError.getDefaultMessage()));
+          new ValidationError(fieldError.getField(), fieldError.getRejectedValue(),
+              fieldError.getDefaultMessage()));
     }
 
-    ErrorResponse errorResponse = new ErrorResponse(id, "Field validation failed!", validationErrors);
+    ErrorResponse errorResponse =
+        new ErrorResponse(id, "Field validation failed!", validationErrors);
     LOG.error("{}", errorResponse);
 
     return ResponseEntity
@@ -49,7 +54,8 @@ public class PaymentErrorHandler {
   }
 
   @ExceptionHandler(InsufficientFundsException.class)
-  public ResponseEntity<ErrorResponse> handleInsufficientFundsException(InsufficientFundsException ex) {
+  public ResponseEntity<ErrorResponse> handleInsufficientFundsException(
+      InsufficientFundsException ex) {
     ErrorResponse errorResponse = new ErrorResponse(ex.getId(),
         "Insufficient funds for account id: " + ex.getAccountId(), List.of());
     LOG.error("{}", errorResponse);
@@ -59,24 +65,26 @@ public class PaymentErrorHandler {
   }
 
   @ExceptionHandler(SenderAccountNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleSenderAccountNotFoundException(SenderAccountNotFoundException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(ex.getId(),
-            "Sender account not found for account id: " + ex.getAccountId(), List.of());
-        LOG.error("{}", errorResponse);
-        return ResponseEntity
-            .badRequest()
-            .body(errorResponse);
-    }
+  public ResponseEntity<ErrorResponse> handleSenderAccountNotFoundException(
+      SenderAccountNotFoundException ex) {
+    ErrorResponse errorResponse = new ErrorResponse(ex.getId(),
+        "Sender account not found for account id: " + ex.getAccountId(), List.of());
+    LOG.error("{}", errorResponse);
+    return ResponseEntity
+        .badRequest()
+        .body(errorResponse);
+  }
 
-    @ExceptionHandler(ReceiverAccountNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleReceiverAccountNotFoundException(ReceiverAccountNotFoundException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(ex.getId(),
-            "Receiver account not found for account id: " + ex.getAccountId(), List.of());
-        LOG.error("{}", errorResponse);
-        return ResponseEntity
-            .badRequest()
-            .body(errorResponse);
-    }
+  @ExceptionHandler(ReceiverAccountNotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleReceiverAccountNotFoundException(
+      ReceiverAccountNotFoundException ex) {
+    ErrorResponse errorResponse = new ErrorResponse(ex.getId(),
+        "Receiver account not found for account id: " + ex.getAccountId(), List.of());
+    LOG.error("{}", errorResponse);
+    return ResponseEntity
+        .badRequest()
+        .body(errorResponse);
+  }
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleGenericException(Exception ex, WebRequest request) {

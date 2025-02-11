@@ -7,4 +7,6 @@ public record ErrorResponse(
     UUID id,
     String message,
     List<ValidationError> validationErrors
-) {}
+) {
+
+}

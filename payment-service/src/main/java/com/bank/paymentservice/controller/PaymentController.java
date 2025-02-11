@@ -16,24 +16,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1")
-public class PaymentController
-{
+public class PaymentController {
+
   private static final Logger LOG = LoggerFactory.getLogger(PaymentController.class);
 
   private final PaymentService paymentService;
   private final PaymentRequestMapper paymentRequestMapper;
 
-  public PaymentController(PaymentService paymentService, PaymentRequestMapper paymentRequestMapper) {
+  public PaymentController(PaymentService paymentService,
+      PaymentRequestMapper paymentRequestMapper) {
     this.paymentService = paymentService;
     this.paymentRequestMapper = paymentRequestMapper;
   }
 
   @PostMapping("/payment")
-  public ResponseEntity<PaymentResponse> handlePaymentRequest(@Valid @RequestBody PaymentRequest request,
+  public ResponseEntity<PaymentResponse> handlePaymentRequest(
+      @Valid @RequestBody PaymentRequest request,
       HttpServletRequest httpRequest) {
     LOG.info("PaymentRequest: {}", request);
     httpRequest.setAttribute("id", request.id());
-    PaymentResponse paymentResponse = paymentService.processPayment(paymentRequestMapper.toEntity(request));
+    PaymentResponse paymentResponse =
+        paymentService.processPayment(paymentRequestMapper.toEntity(request));
     return ResponseEntity.accepted().body(paymentResponse);
   }
 }

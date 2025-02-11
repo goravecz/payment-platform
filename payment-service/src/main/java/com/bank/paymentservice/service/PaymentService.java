@@ -50,12 +50,12 @@ public class PaymentService {
     Transaction processedTransaction = accountsService.makePayment(savedTransaction);
 
     if (processedTransaction.getStatus() == TransactionStatus.INSUFFICIENT_FUNDS) {
-      throw new InsufficientFundsException(processedTransaction.getUuid(), processedTransaction.getSenderId());
+      throw new InsufficientFundsException(processedTransaction.getUuid(),
+          processedTransaction.getSenderId());
     }
 
     notificationService.sendNotification(transactionMapper.toNotification(processedTransaction));
 
     return paymentResponseMapper.toResponse(processedTransaction);
   }
-
 }

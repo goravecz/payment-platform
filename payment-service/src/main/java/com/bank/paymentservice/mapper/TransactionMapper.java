@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TransactionMapper {
+
   public Notification toNotification(Transaction transaction) {
     return new Notification(
         transaction.getUuid(),

@@ -117,8 +117,7 @@ public class Transaction {
 
   @Override
   public boolean equals(Object o) {
-    if (o == null || getClass() != o.getClass())
-    {
+    if (o == null || getClass() != o.getClass()) {
       return false;
     }
 
@@ -139,8 +138,7 @@ public class Transaction {
   }
 
   @Override
-  public String toString()
-  {
+  public String toString() {
     return "Transaction{" +
         "id=" + id +
         ", senderId='" + senderId + '\'' +
