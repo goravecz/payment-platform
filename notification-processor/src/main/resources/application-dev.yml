@@ -7,3 +7,9 @@ spring:
       enable-auto-commit: false
 server:
   port: 8766
+logging:
+  level:
+    org.apache.kafka.clients.consumer.KafkaConsumer: DEBUG
+    org.apache.kafka.clients.consumer.internals.ConsumerCoordinator: DEBUG
+    org.apache.kafka.clients.consumer.internals.Fetcher: DEBUG
+    org.apache.kafka.clients.consumer.internals.SubscriptionState: DEBUG
