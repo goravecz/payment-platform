@@ -42,7 +42,7 @@ public class PaymentService {
 
     Transaction savedTransaction;
     try {
-      savedTransaction = transactionsService.save(transaction);
+      savedTransaction = transactionsService.saveWithLocking(transaction);
     } catch (DataIntegrityViolationException ex) {
       throw new DuplicateTransactionException(transaction.getUuid());
     }
